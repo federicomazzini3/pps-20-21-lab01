@@ -1,6 +1,6 @@
 package lab01.example.model;
 
-public class AbstractSimpleBankAccount implements BankAccount {
+public abstract class AbstractSimpleBankAccount implements BankAccount {
     protected final AccountHolder holder;
     protected double balance;
 
