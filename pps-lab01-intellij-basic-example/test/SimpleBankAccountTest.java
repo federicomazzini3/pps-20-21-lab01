@@ -9,10 +9,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * The test suite for testing the SimpleBankAccount implementation
  */
 
-class SimpleBankAccountTest extends AbstractSimpleBankAccountTest {
+class SimpleBankAccountTest extends AbstractSimpleBankAccountTest<SimpleBankAccount> {
 
     @Override
-    BankAccount getBankAccount(AccountHolder accountHolder, double initialAmount) {
+    SimpleBankAccount getBankAccount(AccountHolder accountHolder, double initialAmount) {
         return new SimpleBankAccount(accountHolder, initialAmount);
     }
 }

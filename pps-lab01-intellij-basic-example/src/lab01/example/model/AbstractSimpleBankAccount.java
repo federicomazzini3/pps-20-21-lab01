@@ -33,11 +33,11 @@ public abstract class AbstractSimpleBankAccount implements BankAccount {
         }
     }
 
-    private boolean isWithdrawAllowed(final double amount) {
+    protected boolean isWithdrawAllowed(final double amount) {
         return this.balance >= amount;
     }
 
-    private boolean checkUser(final int id) {
+    protected boolean checkUser(final int id) {
         return this.holder.getId() == id;
     }
 }
