@@ -1,43 +1,45 @@
 import lab01.example.model.AccountHolder;
-import lab01.example.model.BankAccount;
-import lab01.example.model.SimpleBankAccount;
 import lab01.example.model.SimpleBankAccountWithAtm;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SimpleBankAccountWithAtmTest extends AbstractSimpleBankAccountTest<SimpleBankAccountWithAtm>{
 
+    private static final int DEPOSIT_AMOUNT_WITH_ATM = 100;
+    private static final int WITHDRAW_AMOUNT_WITH_ATM = 70;
+    private static final int DEPOSIT_ATM_FEE = 1;
+    private static final int WITHDRAW_ATM_FEE = 1;
+
     @Override
-    SimpleBankAccountWithAtm getBankAccount(AccountHolder accountHolder, double initialAmount) {
-        return new SimpleBankAccountWithAtm(accountHolder, initialAmount);
+    SimpleBankAccountWithAtm setTestedTypeBankAccount(AccountHolder accountHolder, double initialBalance) {
+        return new SimpleBankAccountWithAtm(accountHolder, initialBalance);
     }
 
     @Test
     void testDepositWithAtm(){
-        bankAccount.depositWithAtm(accountHolder.getId(), 100);
-        assertEquals(99, bankAccount.getBalance());
+        bankAccount.depositWithAtm(accountHolder.getId(), DEPOSIT_AMOUNT_WITH_ATM);
+        assertEquals(DEPOSIT_AMOUNT_WITH_ATM - DEPOSIT_ATM_FEE, bankAccount.getBalance());
     }
 
     @Test
     void testWrongDepositWithAtm() {
-        bankAccount.depositWithAtm(accountHolder.getId(), 100);
-        bankAccount.depositWithAtm(2, 50);
-        assertEquals(99, bankAccount.getBalance());
+        bankAccount.depositWithAtm(accountHolder.getId(), DEPOSIT_AMOUNT_WITH_ATM);
+        bankAccount.depositWithAtm(WRONG_ID_ACCOUNT_HOLDER, WRONG_DEPOSIT_AMOUNT);
+        assertEquals(DEPOSIT_AMOUNT_WITH_ATM - DEPOSIT_ATM_FEE, bankAccount.getBalance());
     }
 
     @Test
-    void testWithdraw() {
-        bankAccount.depositWithAtm(accountHolder.getId(), 100);
-        bankAccount.withdrawWithAtm(accountHolder.getId(), 70);
-        assertEquals(28, bankAccount.getBalance());
+    void testWithdrawWithAtm() {
+        bankAccount.depositWithAtm(accountHolder.getId(), DEPOSIT_AMOUNT_WITH_ATM);
+        bankAccount.withdrawWithAtm(accountHolder.getId(), WITHDRAW_AMOUNT_WITH_ATM);
+        assertEquals(DEPOSIT_AMOUNT_WITH_ATM - DEPOSIT_ATM_FEE - WITHDRAW_AMOUNT_WITH_ATM - WITHDRAW_ATM_FEE, bankAccount.getBalance());
     }
 
     @Test
-    void testWrongWithdraw() {
-        bankAccount.depositWithAtm(accountHolder.getId(), 100);
-        bankAccount.withdrawWithAtm(2, 70);
-        assertEquals(99, bankAccount.getBalance());
+    void testWrongWithdrawWithAtm() {
+        bankAccount.depositWithAtm(accountHolder.getId(), DEPOSIT_AMOUNT_WITH_ATM);
+        bankAccount.withdrawWithAtm(WRONG_ID_ACCOUNT_HOLDER, WRONG_DEPOSIT_AMOUNT);
+        assertEquals(DEPOSIT_AMOUNT_WITH_ATM - DEPOSIT_ATM_FEE, bankAccount.getBalance());
     }
 }

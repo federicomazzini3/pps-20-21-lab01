@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SimpleBankAccountTest extends AbstractSimpleBankAccountTest<SimpleBankAccount> {
 
     @Override
-    SimpleBankAccount getBankAccount(AccountHolder accountHolder, double initialAmount) {
-        return new SimpleBankAccount(accountHolder, initialAmount);
+    SimpleBankAccount setTestedTypeBankAccount(AccountHolder accountHolder, double initialBalance) {
+        return new SimpleBankAccount(accountHolder, initialBalance);
     }
 }
