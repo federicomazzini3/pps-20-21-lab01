@@ -1,10 +1,7 @@
 import lab01.tdd.*;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Array;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,11 +11,13 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class CircularListTest {
 
-    CircularList circularList;
+    private CircularList circularList;
+    private SelectStrategyFactory selectStrategy;
 
     @BeforeEach
     void beforeEach(){
         circularList = new CircularListImpl();
+        selectStrategy = new SelectStrategyFactory();
     }
 
     private int[] generateElementsForTesting(int elementsNumber) {
@@ -42,8 +41,7 @@ public class CircularListTest {
 
     @Test
     void testAddElement(){
-        int[] randomElements = generateElementsForTesting(1);
-        addElementsToCircularList(randomElements);
+        circularList.add(1);
         assertFalse(circularList.isEmpty());
     }
 
@@ -55,7 +53,7 @@ public class CircularListTest {
     }
 
     @Test
-    void testNextWithEmptyCirculartList(){
+    void testNextWithEmptyCircularList(){
         assertEquals(Optional.empty(), circularList.next());
     }
 
@@ -111,27 +109,23 @@ public class CircularListTest {
 
     @Test
     void testNextEvenWithStrategy(){
-        SelectEvenStrategy evenStrategy = new SelectEvenStrategy();
-        int[] elements = new int[]{0,1,1};
+        int[] elements = new int[]{1,2,3};
         addElementsToCircularList(elements);
         circularList.next();
-        assertEquals(0, circularList.next(evenStrategy).get());
+        assertEquals(2, circularList.next(selectStrategy.even()).get());
     }
 
     @Test
     void testNextMultipleOfStrategy(){
-        SelectMultipleOfStrategy multipleOfStrategy = new SelectMultipleOfStrategy(2);
         int[] elements = new int[]{3,3,8,5};
         addElementsToCircularList(elements);
-        assertEquals(8, circularList.next(multipleOfStrategy).get());
+        assertEquals(8, circularList.next(selectStrategy.multipleOf(2)).get());
     }
 
     @Test
     void testNextEqualsStrategy(){
-        SelectEqualsStrategy equalsStrategy = new SelectEqualsStrategy(8);
         int[] elements = new int[]{3,3,8,5};
         addElementsToCircularList(elements);
-        assertEquals(8, circularList.next(equalsStrategy).get());
+        assertEquals(8, circularList.next(selectStrategy.equalsOf(8)).get());
     }
-
 }
