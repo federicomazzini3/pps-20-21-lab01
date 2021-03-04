@@ -13,11 +13,14 @@ public class CircularListTest {
 
     private CircularList circularList;
     private SelectStrategyFactory selectStrategy;
+    private int[] randomElements;
+    public static final int ELEMENTS_NUMBER_FOR_TESTING = 5;
 
     @BeforeEach
     void beforeEach(){
         circularList = new CircularListImpl();
         selectStrategy = new SelectStrategyFactory();
+        randomElements = generateElementsForTesting(ELEMENTS_NUMBER_FOR_TESTING);
     }
 
     private int[] generateElementsForTesting(int elementsNumber) {
@@ -28,9 +31,9 @@ public class CircularListTest {
         return elementsForTesting;
     }
 
-    private void addElementsToCircularList(int[] elementsForTesting){
-        for(int i = 0; i < elementsForTesting.length; i ++){
-            circularList.add(elementsForTesting[i]);
+    private void addElementsToCircularList(){
+        for(int i = 0; i < randomElements.length; i ++){
+            circularList.add(randomElements[i]);
         }
     }
 
@@ -47,8 +50,7 @@ public class CircularListTest {
 
     @Test
     void testSize(){
-        int[] randomElements = generateElementsForTesting(5);
-        addElementsToCircularList(randomElements);
+        addElementsToCircularList();
         assertEquals(randomElements.length, circularList.size());
     }
 
@@ -59,8 +61,7 @@ public class CircularListTest {
 
     @Test
     void testNext(){
-        int[] randomElements = generateElementsForTesting(3);
-        addElementsToCircularList(randomElements);
+        addElementsToCircularList();
         assertEquals(randomElements[0], circularList.next().get());
         assertEquals(randomElements[1], circularList.next().get());
         assertEquals(randomElements[2], circularList.next().get());
@@ -68,8 +69,7 @@ public class CircularListTest {
 
     @Test
     void testCircularNext(){
-        int[] randomElements = generateElementsForTesting(3);
-        addElementsToCircularList(randomElements);
+        addElementsToCircularList();
         assertEquals(randomElements[0], circularList.next().get());
         assertEquals(randomElements[1], circularList.next().get());
         assertEquals(randomElements[2], circularList.next().get());
@@ -83,8 +83,7 @@ public class CircularListTest {
 
     @Test
     void testPrevious(){
-        int[] randomElements = generateElementsForTesting(2);
-        addElementsToCircularList(randomElements);
+        addElementsToCircularList();
         circularList.next();
         circularList.next();
         assertEquals(randomElements[0], circularList.previous().get());
@@ -92,15 +91,13 @@ public class CircularListTest {
 
     @Test
     void testCircularPrevious(){
-        int[] randomElements = generateElementsForTesting(2);
-        addElementsToCircularList(randomElements);
+        addElementsToCircularList();
         assertEquals(randomElements[1], circularList.previous().get());
     }
 
     @Test
     void testReset(){
-        int[] randomElements = generateElementsForTesting(3);
-        addElementsToCircularList(randomElements);
+        addElementsToCircularList();
         assertEquals(randomElements[0], circularList.next().get());
         assertEquals(randomElements[1], circularList.next().get());
         circularList.reset();
@@ -109,23 +106,27 @@ public class CircularListTest {
 
     @Test
     void testNextEvenWithStrategy(){
-        int[] elements = new int[]{1,2,3};
-        addElementsToCircularList(elements);
-        circularList.next();
+        circularList.add(1);
+        circularList.add(2);
+        circularList.add(3);
         assertEquals(2, circularList.next(selectStrategy.even()).get());
     }
 
     @Test
     void testNextMultipleOfStrategy(){
-        int[] elements = new int[]{3,3,8,5};
-        addElementsToCircularList(elements);
+        circularList.add(3);
+        circularList.add(3);
+        circularList.add(8);
+        circularList.add(5);
         assertEquals(8, circularList.next(selectStrategy.multipleOf(2)).get());
     }
 
     @Test
     void testNextEqualsStrategy(){
-        int[] elements = new int[]{3,3,8,5};
-        addElementsToCircularList(elements);
+        circularList.add(3);
+        circularList.add(3);
+        circularList.add(8);
+        circularList.add(5);
         assertEquals(8, circularList.next(selectStrategy.equalsOf(8)).get());
     }
 }
