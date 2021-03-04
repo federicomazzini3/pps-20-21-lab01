@@ -1,5 +1,6 @@
 import lab01.tdd.CircularList;
 import lab01.tdd.CircularListImpl;
+import lab01.tdd.SelectEvenStrategy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -100,8 +101,6 @@ public class CircularListTest {
         assertEquals(randomElements[1], circularList.previous().get());
     }
 
-
-
     @Test
     void testReset(){
         int[] randomElements = generateElementsForTesting(3);
@@ -110,5 +109,15 @@ public class CircularListTest {
         assertEquals(randomElements[1], circularList.next().get());
         circularList.reset();
         assertEquals(randomElements[0], circularList.next().get());
+    }
+
+    @Test
+    void testEvenNextWithStrategy(){
+        SelectEvenStrategy evenStrategy = new SelectEvenStrategy();
+        circularList.add(0);
+        circularList.add(1);
+        circularList.add(1);
+        circularList.next();
+        assertEquals(0, circularList.next(evenStrategy).get());
     }
 }

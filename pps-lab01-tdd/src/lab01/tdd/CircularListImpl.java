@@ -29,7 +29,7 @@ public class CircularListImpl implements CircularList {
         return this.circularList.isEmpty();
     }
 
-    private Optional<Integer> getIntegerOrEmpty() {
+    private Optional<Integer> getValueOrEmpty() {
         return isEmpty()
                 ? Optional.empty()
                 : Optional.of(circularList.get(indexCircularList));
@@ -40,7 +40,7 @@ public class CircularListImpl implements CircularList {
         indexCircularList++;
         if (indexCircularList >= circularList.size())
             indexCircularList = 0;
-        return getIntegerOrEmpty();
+        return getValueOrEmpty();
     }
 
     @Override
@@ -48,7 +48,7 @@ public class CircularListImpl implements CircularList {
         indexCircularList--;
         if (indexCircularList < 0)
             indexCircularList = circularList.size() - 1;
-        return getIntegerOrEmpty();
+        return getValueOrEmpty();
     }
 
     @Override
@@ -58,6 +58,10 @@ public class CircularListImpl implements CircularList {
 
     @Override
     public Optional<Integer> next(SelectStrategy strategy) {
+        for(int i = 0; i < circularList.size(); i++){
+            if(strategy.apply(this.next().get()))
+                return Optional.of(circularList.get(indexCircularList));
+        }
         return Optional.empty();
     }
 }
