@@ -1,7 +1,7 @@
 package lab01.tdd;
 
 public class SelectMultipleOfStrategy implements SelectStrategy{
-    int number;
+    private final int number;
 
     public SelectMultipleOfStrategy(int number) {
         this.number = number;
